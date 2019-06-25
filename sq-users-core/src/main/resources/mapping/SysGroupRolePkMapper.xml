@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sq.users.core.mapper.SysGroupRolePkMapper" >
+  <resultMap id="BaseResultMap" type="cn.sq.users.core.po.SysGroupRolePk" >
+    <result column="group_id" property="groupId" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    group_id, role_id
+  </sql>
+
+  <resultMap id="BaseGroupRoleMap" type="cn.sq.users.core.po.SysRole" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <insert id="saveBatch" parameterType="java.util.List">
+    insert into sys_group_role_pk (group_id,role_id) values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.groupId,jdbcType=INTEGER},#{item.roleId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+</mapper>

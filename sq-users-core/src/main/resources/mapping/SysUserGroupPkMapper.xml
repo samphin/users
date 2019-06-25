@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sq.users.core.mapper.SysUserGroupPkMapper">
+    <resultMap id="BaseResultMap" type="cn.sq.users.core.po.SysUserGroupPk">
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="group_id" property="groupId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        user_id, group_id
+    </sql>
+
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into sys_user_group_pk (group_id,user_id) values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.groupId,jdbcType=INTEGER},#{item.userId,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+
+    <delete id="dismissGroup" parameterType="java.lang.Integer">
+        DELETE
+        FROM sys_user_group_pk
+        where group_id = #{groupId}
+    </delete>
+</mapper>

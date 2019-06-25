@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sq.users.core.mapper.SysMenuMapper">
+    <resultMap id="BaseResultMap" type="cn.sq.users.core.po.SysMenu">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="icon" property="icon" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="leaf" property="leaf" jdbcType="BIT"/>
+        <result column="enabled" property="enabled" jdbcType="BIT"/>
+        <result column="version" property="version" jdbcType="INTEGER"/>
+        <result column="create_user_id" property="createUserId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="last_update_user_id" property="lastUpdateUserId" jdbcType="INTEGER"/>
+        <result column="last_update_time" property="lastUpdateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, parent_id, `name`, url, icon, sort, `level`, leaf, enabled, description,
+        create_user_id, create_time, last_update_user_id, last_update_time
+    </sql>
+
+    <select id="selectPageList" parameterType="sysMenu" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_menu
+        <where>
+            <if test="name!=null and name != ''">
+                AND `name` like concat('%',#{name,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="enabled!=null and enabled != ''">
+                AND enabled = #{enabled,jdbcType=BIT}
+            </if>
+            <if test="level!=null and level != ''">
+                AND level = #{level,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateByPrimaryKeyAndVersionSelective" parameterType="sysMenu">
+        update sys_menu
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                icon = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                `level` = #{level,jdbcType=INTEGER},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled,jdbcType=BIT},
+            </if>
+            <if test="lastUpdateTime != null">
+                last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            version = #{version,jdbcType=INTEGER} + 1
+    </set>
+    where id = #{id,jdbcType=INTEGER} and version = #{version,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,34 @@
+
+server:
+  port: 8091
+
+logging:
+  path: logs/
+  level:
+    root: INFO
+
+spring:
+  application:
+    name: sq-users
+  profiles.active: dev
+  messages:
+    basename: sq-user
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${link.eureka-server1.root},${link.eureka-server2.root}
+
+
+
+link:
+  common.root: ${common.server.name:http://localhost:8090/accounts}
+  eureka-server1.root: ${eureka-server1.name:http://eureka-server1:1111/eureka/}
+  eureka-server2.root: ${eureka-server2.name:http://eureka-server2:1112/eureka/}
+
+
+---
+mybatis:
+  config-locations: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: cn.sq.users.core.po # 注意：对应实体类的路径

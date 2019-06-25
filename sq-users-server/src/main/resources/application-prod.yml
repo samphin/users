@@ -1,0 +1,13 @@
+
+eureka:
+  client:
+    healthcheck:
+      enabled: false  # 开启健康检查（需要spring-boot-starter-actuator依赖）
+
+spring:
+  datasource:
+    url: ${datasource.url:jdbc:mysql://192.168.0.191:3306/sq_users}
+    username: sqzn
+    password: sqzn
+
+

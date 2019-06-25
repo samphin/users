@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sq.users.core.mapper.SysPermissionResourcePkMapper" >
+  <resultMap id="BaseResultMap" type="cn.sq.users.core.po.SysPermissionResourcePk" >
+    <result column="permission_id" property="permissionId" jdbcType="INTEGER" />
+    <result column="resource_type" property="resourceType" jdbcType="VARCHAR" />
+    <result column="resource_id" property="resourceId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    permission_id, resource_type, resource_id
+  </sql>
+
+  <insert id="saveBatch" parameterType="java.util.List">
+    insert into sys_permission_resource_pk (permission_id,resource_type,resource_id) values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.permissionId,jdbcType=INTEGER},#{item.resourceType,jdbcType=VARCHAR},#{item.resourceId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+  <select id="selectPermissionHaveResource" parameterType="cn.sq.users.core.po.SysPermissionResourcePk" resultMap="BaseResultMap">
+      select <include refid="Base_Column_List"/> from sys_permission_resource_pk
+      <where>
+          permission_id = #{permissionId,jdbcType=INTEGER}
+          <if test="resourceType!='' and resourceType!=null">
+            and resource_type = #{resourceType,jdbcType=VARCHAR}
+          </if>
+      </where>
+  </select>
+</mapper>
